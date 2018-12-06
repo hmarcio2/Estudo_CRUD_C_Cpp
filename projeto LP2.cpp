@@ -12,8 +12,9 @@ using namespace std;
 		int valor_condominio;
 		int num_garagem;
 		int num_quartos;		
-		double area_total;
-		double area_construida;	
+		double area;
+		char posicao[30];	
+		char ativo;
 	}tApartamento;
 	
 	typedef struct casa{
@@ -43,14 +44,44 @@ int interface(){
 	system("cls");
 	return menu;
 }
-void cadastrarApartamento(){
+void cadastrarApartamento(tApartamento N_apartamento[]){
+	cout<<"Qual o titulo do anuncio"<<endl;
+	cin>> N_apartamento->titulo; 	
+	cout<<"Qual a rua"<<endl;
+	cin>> N_apartamento->rua; 	
+	cout<<"Qual o andar"<<endl;
+	cin>> N_apartamento->andar; 	
+	cout<<"Qual o valor do condominio"<<endl;
+	cin>> N_apartamento->valor_condominio; 	
+	cout<<"Quantas garagens"<<endl;
+	cin>> N_apartamento->num_garagem; 	
+	cout<<"Qual o numero de quartos"<<endl;
+	cin>> N_apartamento->num_quartos; 	
+	cout<<"Qual a area"<<endl;
+	cin>> N_apartamento->area;	
+	cout<<"Qual a posicao"<<endl;
+	cin>> N_apartamento->posicao; 	
+	N_apartamento->ativo = 'S'; 	
 }	
 void cadastrarCasa(){
 }
 void cadastrarTerreno(){
 }
 
-void consultarApartamento(){
+void consultarApartamento(tApartamento N_apartamento[]){
+	int i;
+    for (i=0 ; i<100 ; i++)
+        if (N_apartamento[i].ativo) {
+            cout << "\nTitulo: " << N_apartamento[i].titulo << endl;
+            cout << "Rua: " << N_apartamento[i].rua << endl;
+            cout << "Andar: " << N_apartamento[i].andar << endl;
+            cout << "Valor condominio: " << N_apartamento[i].valor_condominio << endl;
+            cout << "Numero de garagem: " << N_apartamento[i].num_garagem << endl;
+            cout << "Numero de quartos: " << N_apartamento[i].num_quartos << endl;
+            cout << "Area: " << N_apartamento[i].area << endl;
+            cout << "Posicao: " << N_apartamento[i].posicao << endl; 
+			getchar();           
+        }
 	//por titulo
 	//por bairro
 	//por valor
@@ -71,7 +102,7 @@ void consultarTerreno(){
 	//para vender
 	//para alugar
 }
-void editar_imovel(){
+void editarImovel(){
 }
 
 
@@ -82,12 +113,33 @@ void apagarCasa(){
 void apagarTerreno(){
 }
 
-void salvarArquivos(){
+void salvarApartamentos(tApartamento lista[]){
+	int escolha;
+	cout<< "Deseja salvar?"<<endl;
+	cout<<"(0) Sim"<<endl;
+	cout<<"(1) Nao"<<endl;
+	cin >> escolha;
+	if (escolha==0){
+		FILE* arq_apt = fopen("apartamento.txt", "w");
+    if (arq_apt > 0) {
+        fwrite(lista, 50, sizeof(tApartamento), arq_apt);
+        fclose(arq_apt);
+    }
+    else
+        cout << "Erro ao abrir o arquivo\n";
+		cout<< "Alteracao salva"<<endl;
+	}else{
+		interface();
+	}
+}	
+
+void salvarCasas(tCasa lista[]){
+
+}
+void salvarTerrenos(tTerreno lista[]){
 }
 
-
-
-void lerApartamento(tApartamento N_apartamento[]) {
+void carregarApartamento(tApartamento N_apartamento[]) {
     FILE* arq_apt = fopen("apartamentos.txt", "rw");
     if (arq_apt > 0) {
         fread(N_apartamento, 50, sizeof(tApartamento), arq_apt);
@@ -97,7 +149,7 @@ void lerApartamento(tApartamento N_apartamento[]) {
         cout << "Erro ao abrir a listas de \n";
 }
 
-void lerCasa(tCasa N_casa[]) {
+void carregarCasa(tCasa N_casa[]) {
     FILE* arq_cas = fopen("casas.txt", "rw");
     if (arq_cas > 0) {
         fread(N_casa, 50, sizeof(tCasa), arq_cas);
@@ -107,7 +159,7 @@ void lerCasa(tCasa N_casa[]) {
         cout << "Erro ao abrir a lista de casas\n";
 }
 
-void lerTerreno(tTerreno N_terreno[]) {
+void carregarTerreno(tTerreno N_terreno[]) {
     FILE* arq_ter = fopen("apartamentos.txt", "rw");
     if (arq_ter > 0) {
         fread(N_terreno, 50, sizeof(tTerreno), arq_ter);
@@ -118,12 +170,14 @@ void lerTerreno(tTerreno N_terreno[]) {
 }
 
 int main(void){		
-	int N_casa[50];
-	int N_apartamento[50];
-	int N_terreno[50];		
+	tCasa N_casa[50];
+	tApartamento N_apartamento[50];
+	tTerreno N_terreno[50];		
 	int menu = 0; 
 		
 	menu = interface();
+	
+	
 	
 	switch (menu){	
 		case 1:{
@@ -137,7 +191,8 @@ int main(void){
 				switch (menu) {
 					case 1:	
 					{
-						consultarApartamento();
+						consultarApartamento(N_apartamento);
+						
 						break;
 					}
 					case 2:
@@ -175,7 +230,7 @@ int main(void){
 				switch (menu){
 					case 1:
 					{	
-						cadastrarApartamento();							
+						cadastrarApartamento(N_apartamento);													
 						break;
 					}
 					case 2:
@@ -190,7 +245,7 @@ int main(void){
 					}
 					case 4:
 					{
-						salvarArquivos();
+						//salvarArquivos();
 						break;
 					}
 					case 0:
@@ -234,7 +289,7 @@ int main(void){
 					}
 					case 4:
 					{
-						salvarArquivos();
+						//salvarArquivos();
 						break;
 					}
 					case 0:
